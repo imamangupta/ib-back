@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
 // const role = require('../../models/role')
 // const appConstant = require("../../constants/appConstant");
 
-const {JWT_SECRET} = require('../../config/config');
+// const {JWT_SECRET} = require('../../config/config');
 
 exports.addUser = async (req, res) => {
 
