@@ -13,8 +13,8 @@ app.get('/', (req, res) => {
   res.send({"result":"true"})
 })
 
-var indexRouter = require('./routes/index');
-app.use('/api', indexRouter);
+// var indexRouter = require('./routes/index');
+// app.use('/api', indexRouter);
 
 
 app.listen(port, () => {
