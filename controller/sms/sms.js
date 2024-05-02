@@ -1,6 +1,6 @@
 const multer = require('multer')
-const upload = multer({ dest: 'tmp/' })
-// const upload = multer()
+// const upload = multer({ dest: 'tmp/' })
+const upload = multer()
 const XLSX = require("xlsx");
 const Sms = require('../../models/sms');
 
