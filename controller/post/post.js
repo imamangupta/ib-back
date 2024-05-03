@@ -1,8 +1,9 @@
 const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
-// const upload = multer()
 const XLSX = require("xlsx");
 const Post = require('../../models/post');
+
+
 
 // working..,
 exports.addPost = async (req, res) => {
@@ -43,53 +44,87 @@ exports.addPost = async (req, res) => {
 };
 
 
-// all data of action
-exports.allpost = async (req, res) => {
+// All data according to the datatype
+exports.typePost = async (req, res) => {
 
-    
-    let user = await Post.find({dataType:'Action'})
-    var result= [];
+    const { dataType } = req.body;
+
+    let user = await Post.find({ dataType: dataType })
+    var result = [];
 
     for (let index = 0; index < user.length; index++) {
-       
+
         const element = user[index];
         for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
             const newElement = element.postData[newIndex];
 
             result.push(newElement);
-           
-            
-        }        
+
+        }
     }
 
     return res.status(200).json(result)
-
 };
 
 
-//Filter by state
 
+//Filter by state according to the datatype
 exports.fstate = async (req, res) => {
 
-    
-    let user = await Post.find({dataType:'Action'})
-    var result= [];
+    const { dataType, state } = req.body;
+
+    let user = await Post.find({ dataType: dataType })
+    var result = [];
 
     for (let index = 0; index < user.length; index++) {
-       
+
         const element = user[index];
         for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
             const newElement = element.postData[newIndex];
 
-            if (newElement.State === "ANDHRA PRADESH") {
+            if (newElement.State === state) {
                 result.push(newElement);
             }
-            
+
+        }
+    }
+
+    return res.status(200).json(result)
+};
+
+
+
+//Filter by mounth according to the datatype
+exports.fmonth = async (req, res) => {
+
+    const { dataType, myMonth } = req.body;
+
+    let user = await Post.find({dataType: dataType})
+    var result= [];
+
+    for (let index = 0; index < user.length; index++) {
+
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+            const newElement = element.postData[newIndex];
+
+            const dateStr = newElement.Notice_Date;
+            const [day, month, year] = dateStr.split('-');
+            const dateObj = new Date(`${month} ${day}, ${year}`);
+            const monthName = dateObj.toLocaleString('default', { month: 'long' });
+
+
+            if (monthName === myMonth) {
+                result.push(newElement);
+            }
+
         }        
     }
 
     return res.status(200).json(result)
-
 };
+
+
+
 
 

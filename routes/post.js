@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { addPost, fstate,allpost } = require('../controller/post/post');
+const { addPost, fstate,typePost ,fmonth} = require('../controller/post/post');
 const { wrapper } = require('../utils/errorWrapper');
 const checkAuth = require('../middleware/checkAuth');
 
@@ -8,9 +8,12 @@ const checkAuth = require('../middleware/checkAuth');
 
 
 
-router.post('/addpost',wrapper(addPost));
-router.get('/fstate',wrapper(fstate));
-router.get('/all',wrapper(allpost));
+router.post('/addpost',checkAuth,wrapper(addPost));
+router.get('/typepost',checkAuth,wrapper(typePost));
+
+router.get('/fstate',checkAuth,wrapper(fstate));
+router.get('/fmonth',checkAuth,wrapper(fmonth));
+
 
 
 
