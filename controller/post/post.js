@@ -1,6 +1,6 @@
 const multer = require('multer')
-// const upload = multer({ dest: 'uploads/' })
-const upload = multer()
+const upload = multer({ dest: 'uploads/' })
+// const upload = multer()
 const XLSX = require("xlsx");
 const Post = require('../../models/post');
 
@@ -29,7 +29,7 @@ exports.addPost = async (req, res) => {
             const post = await Post.create({
                 dataType: dataType,
                 postData: data,
-             
+
             })
 
             // Return the response with the processed data
@@ -41,4 +41,55 @@ exports.addPost = async (req, res) => {
     });
 
 };
+
+
+// all data of action
+exports.allpost = async (req, res) => {
+
+    
+    let user = await Post.find({dataType:'Action'})
+    var result= [];
+
+    for (let index = 0; index < user.length; index++) {
+       
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+            const newElement = element.postData[newIndex];
+
+            result.push(newElement);
+           
+            
+        }        
+    }
+
+    return res.status(200).json(result)
+
+};
+
+
+//Filter by state
+
+exports.fstate = async (req, res) => {
+
+    
+    let user = await Post.find({dataType:'Action'})
+    var result= [];
+
+    for (let index = 0; index < user.length; index++) {
+       
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+            const newElement = element.postData[newIndex];
+
+            if (newElement.State === "ANDHRA PRADESH") {
+                result.push(newElement);
+            }
+            
+        }        
+    }
+
+    return res.status(200).json(result)
+
+};
+
 
