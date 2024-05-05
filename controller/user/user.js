@@ -59,9 +59,10 @@ exports.addUser = async (req, res) => {
 
     
     
-    let newUser = await User.findById(user.id).select('-password').populate({
+    let newUser = await User.findById(user.id).populate({
         path: 'role'
     })
+    let myUser = await User.findById(user.id).select('-password')
     
     let userObject = {
         fullName: newUser.fullName,
@@ -91,7 +92,7 @@ exports.addUser = async (req, res) => {
         token
     }
 
-    data.userObject = user
+    data.userObject = myUser
     if (newUser.role) {
         data.role = newUser.role.name
     }
