@@ -8,7 +8,7 @@ const checkAuth = require('../middleware/checkAuth');
 
 
 
-router.post('/change-password', wrapper(changePassword));
+router.post('/change-password',checkAuth, wrapper(changePassword));
 
 
 
@@ -24,6 +24,8 @@ router.post('/login', wrapper(userLogin));
 router.post('/send-otp', wrapper(sendOtp));
 
 router.post('/verify-otp', wrapper(verifyOtp));
+
+router.post('/update-password', wrapper(updatePassword));
 
 
 

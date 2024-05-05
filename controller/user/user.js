@@ -59,7 +59,7 @@ exports.addUser = async (req, res) => {
 
     
     
-    let newUser = await User.findById(user.id).populate({
+    let newUser = await User.findById(user.id).select('-password').populate({
         path: 'role'
     })
     
@@ -118,7 +118,8 @@ exports.getUser = async (req, res) => {
     // }
 
     // .skip(offset).limit(pageSize)
-    let user = await User.find(searchQuery)
+    // let user = await User.find(searchQuery)
+    let user = await User.find(searchQuery).select('-password')
 
     // let count = await User.count(searchQuery)
     if (!User) {

@@ -40,11 +40,10 @@ exports.addSms = async (req, res) => {
 
 
 
-
 // All data according to the datatype
 exports.typeSms = async (req, res) => {
 
-    const { dataType } = req.body;
+    const { dataType } = req.query;
 
     let user = await Sms.find({ dataType: dataType })
     var result = [];
@@ -68,7 +67,7 @@ exports.typeSms = async (req, res) => {
 //Filter by state according to the datatype
 exports.fstate = async (req, res) => {
 
-    const { dataType, state } = req.body;
+    const { dataType, state } = req.query;
 
     let user = await Sms.find({ dataType: dataType })
     var result = [];
@@ -94,7 +93,7 @@ exports.fstate = async (req, res) => {
 //Filter by mounth according to the datatype
 exports.fmonth = async (req, res) => {
 
-    const { dataType, myMonth } = req.body;
+    const { dataType, myMonth } = req.query;
 
     let user = await Sms.find({dataType: dataType})
     var result= [];

@@ -74,7 +74,7 @@ exports.userLogin = async (req, res) => {
 };
 
 
-
+// working..,
 exports.userLoginWithOtp = async (req, res) => {
     const { email, referenceCode, otp } = req.body;
 
@@ -225,15 +225,3 @@ exports.updatePassword = async (req, res, next) => {
     return res.status(200).json({ message: 'Password Updated.' });
 };
 
-
-//compare password method
-// let comparePassword = async (password, databasePassword) => {
-//     return new Promise((resolve, reject) => {
-//         bcrypt.compare(password, databasePassword, function (err, isMatch) {
-//             if (err) {
-//                 return err;
-//             }
-//             return resolve(isMatch);
-//         });
-//     });
-// };
