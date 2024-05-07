@@ -133,14 +133,92 @@ exports.fAll = async (req, res) => {
 
     var result = [];
 
-    if (type !== "all") {
+
+
+
+
+    // if (type !== "all") {
+
+    //     var user = await Post.find({ dataType: type })
+
+    // } else {
+
+    //     var user = await Post.find({})
+
+    // }
+
+
+    // for (let index = 0; index < user.length; index++) {
+
+    //     const element = user[index];
+    //     for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+
+    //         const newElement = element.postData[newIndex];
+
+    //         const dateStr = newElement.Notice_Date;
+    //         const [day, month, year] = dateStr.split('-');
+    //         const dateObj = new Date(`${month} ${day}, ${year}`);
+    //         const monthName = dateObj.toLocaleString('default', { month: 'long' });
+
+
+    //         if (mymonth !== "all") {
+
+
+
+    //             if (state !== "all") {
+
+    //                 if (monthName === mymonth && newElement.State === state) {
+    //                     result.push(newElement);
+    //                 }
+
+
+                    
+    //             }else{
+    //                 if (monthName === mymonth) {
+    //                     result.push(newElement);
+    //                 }
+
+    //             }
+
+             
+
+    //         } else {
+
+    //             if (state !== "all") {
+
+    //                 if (newElement.State === state) {
+    //                     result.push(newElement);
+    //                 }
+    //             } else {
+
+    //                 result.push(newElement);
+
+    //             }
+
+    //         }
+
+
+
+
+    //     }
+    // }
+
+
+
+
+
+
+
+    if (type) {
 
         var user = await Post.find({ dataType: type })
+    
 
     } else {
 
         var user = await Post.find({})
 
+      
     }
 
 
@@ -148,8 +226,8 @@ exports.fAll = async (req, res) => {
 
         const element = user[index];
         for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
-
             const newElement = element.postData[newIndex];
+
 
             const dateStr = newElement.Notice_Date;
             const [day, month, year] = dateStr.split('-');
@@ -157,11 +235,11 @@ exports.fAll = async (req, res) => {
             const monthName = dateObj.toLocaleString('default', { month: 'long' });
 
 
-            if (mymonth !== "all") {
+            if (mymonth) {
 
 
 
-                if (state !== "all") {
+                if (state) {
 
                     if (monthName === mymonth && newElement.State === state) {
                         result.push(newElement);
@@ -180,7 +258,7 @@ exports.fAll = async (req, res) => {
 
             } else {
 
-                if (state !== "all") {
+                if (state) {
 
                     if (newElement.State === state) {
                         result.push(newElement);
@@ -198,6 +276,12 @@ exports.fAll = async (req, res) => {
 
         }
     }
+
+
+  
+
+
+
 
 
 
