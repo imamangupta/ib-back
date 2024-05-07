@@ -159,9 +159,24 @@ exports.fAll = async (req, res) => {
 
             if (mymonth !== "all") {
 
-                if (monthName === mymonth) {
-                    result.push(newElement);
+
+
+                if (state !== "all") {
+
+                    if (monthName === mymonth && newElement.State === state) {
+                        result.push(newElement);
+                    }
+
+
+                    
+                }else{
+                    if (monthName === mymonth) {
+                        result.push(newElement);
+                    }
+
                 }
+
+             
 
             } else {
 
