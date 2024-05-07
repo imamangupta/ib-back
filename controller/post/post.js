@@ -99,8 +99,8 @@ exports.fmonth = async (req, res) => {
 
     const { dataType, myMonth } = req.query;
 
-    let user = await Post.find({dataType: dataType})
-    var result= [];
+    let user = await Post.find({ dataType: dataType })
+    var result = [];
 
     for (let index = 0; index < user.length; index++) {
 
@@ -118,11 +118,85 @@ exports.fmonth = async (req, res) => {
                 result.push(newElement);
             }
 
-        }        
+        }
     }
 
     return res.status(200).json(result)
 };
+
+
+
+//Filter by mounth according to the datatype
+exports.fAll = async (req, res) => {
+
+    const { type, mymonth, state } = req.query;
+
+    var result = [];
+
+    if (type !== "all") {
+
+        var user = await Post.find({ dataType: type })
+
+    } else {
+
+        var user = await Post.find({})
+
+    }
+
+
+    for (let index = 0; index < user.length; index++) {
+
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+
+            const newElement = element.postData[newIndex];
+
+            const dateStr = newElement.Notice_Date;
+            const [day, month, year] = dateStr.split('-');
+            const dateObj = new Date(`${month} ${day}, ${year}`);
+            const monthName = dateObj.toLocaleString('default', { month: 'long' });
+
+
+            if (mymonth !== "all") {
+
+                if (monthName === mymonth) {
+                    result.push(newElement);
+                }
+
+            } else {
+
+                if (state !== "all") {
+
+                    if (newElement.State === state) {
+                        result.push(newElement);
+                    }
+                } else {
+
+                    result.push(newElement);
+
+                }
+
+            }
+
+
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+    return res.status(200).json(result)
+
+
+
+};
+
 
 
 
