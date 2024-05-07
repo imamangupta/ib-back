@@ -129,7 +129,8 @@ exports.fmonth = async (req, res) => {
 //Filter by mounth according to the datatype
 exports.fAll = async (req, res) => {
 
-    const { type, mymonth, state } = req.query;
+    const { type, selectedMonth, state } = req.query;
+    let mymonth = selectedMonth
 
     var result = [];
 
