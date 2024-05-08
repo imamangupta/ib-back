@@ -8,7 +8,7 @@ const checkAuth = require('../middleware/checkAuth');
 
 
 
-router.post('/addsms',checkAuth, wrapper(addSms));
+router.post('/addsms', checkAuth,wrapper(addSms));
 
 router.get('/typesms',checkAuth,wrapper(typeSms));
 router.get('/fstate',checkAuth,wrapper(fstate));

@@ -131,64 +131,55 @@ exports.fAll = async (req, res) => {
 
 
 
-    try {
+    // try {
+
+    const { type, selectedMonth, state, city } = req.query;
+    let mymonth = selectedMonth
+
+    var result = [];
+
+    if (type) {
+
+        var user = await Post.find({ dataType: type })
+
+    } else {
+
+        var user = await Post.find({})
+
+    }
+
+
+
+
+    for (let index = 0; index < user.length; index++) {
+
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
+            const newElement = element.postData[newIndex];
 
 
 
 
 
+            if (mymonth) {
+
+                const dateStr = newElement.Notice_Date;
+                const [day, month, year] = dateStr.split('-');
+                const dateObj = new Date(`${month} ${day}, ${year}`);
+                const monthName = dateObj.toLocaleString('default', { month: 'long' });
 
 
+                if (state) {
 
-        const { type, selectedMonth, state } = req.query;
-        let mymonth = selectedMonth
+                    if (city) {
 
-        var result = [];
-
-
-
-
-
-
-        if (type) {
-
-            var user = await Post.find({ dataType: type })
-
-
-        } else {
-
-            var user = await Post.find({})
-
-
-        }
-
-
-        for (let index = 0; index < user.length; index++) {
-
-            const element = user[index];
-            for (let newIndex = 0; newIndex < element.postData.length; newIndex++) {
-                const newElement = element.postData[newIndex];
-
-
-
-
-
-                if (mymonth) {
-
-                    const dateStr = newElement.Notice_Date;
-                    const [day, month, year] = dateStr.split('-');
-                    const dateObj = new Date(`${month} ${day}, ${year}`);
-                    const monthName = dateObj.toLocaleString('default', { month: 'long' });
-
-
-                    if (state) {
-
-                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase()) {
+                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase() && newElement.City === city.toUpperCase()) {
                             result.push(newElement);
                         }
 
                     } else {
-                        if (monthName.toLowerCase() === mymonth.toLowerCase()) {
+
+                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase()) {
                             result.push(newElement);
                         }
 
@@ -198,11 +189,55 @@ exports.fAll = async (req, res) => {
 
                 } else {
 
-                    if (state) {
+                    if (city) {
+
+                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.City === city.toUpperCase()) {
+                            result.push(newElement);
+                        }
+
+                    } else {
+
+                        if (monthName.toLowerCase() === mymonth.toLowerCase()) {
+                            result.push(newElement);
+                        }
+
+                    }
+
+
+
+                }
+
+
+
+            } else {
+
+                if (state) {
+
+                    if (city) {
+
+                        if (newElement.State === state.toUpperCase() && newElement.City === city.toUpperCase()) {
+                            result.push(newElement);
+                        }
+
+
+                    } else {
 
                         if (newElement.State === state.toUpperCase()) {
                             result.push(newElement);
                         }
+
+                    }
+
+
+
+                } else {
+
+                    if (city) {
+
+                        if (newElement.City === city.toUpperCase()) {
+                            result.push(newElement);
+                        }
+
                     } else {
 
                         result.push(newElement);
@@ -211,21 +246,19 @@ exports.fAll = async (req, res) => {
 
                 }
 
-
-
-
             }
+
         }
-
-
-
-        return res.status(200).json(result)
-
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Error to find Data." });
     }
+
+
+
+    return res.status(200).json(result)
+
+    // } catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json({ error: "Error to find Data." });
+    // }
 
 
 
