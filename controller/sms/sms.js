@@ -128,7 +128,7 @@ exports.fAll = async (req, res) => {
         
 
     const { type, selectedMonth, state } = req.query;
-    let mymonth = selectedMonth
+    let mymonth = selectedMonth.toUpperCase();
 
     var result = [];
 
