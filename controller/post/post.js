@@ -141,7 +141,7 @@ exports.fAll = async (req, res) => {
 
 
         const { type, selectedMonth, state } = req.query;
-        let mymonth = selectedMonth.toUpperCase();
+        let mymonth = selectedMonth
 
         var result = [];
 
@@ -183,7 +183,7 @@ exports.fAll = async (req, res) => {
 
                     if (state) {
 
-                        if (monthName === mymonth && newElement.State === state) {
+                        if (monthName === mymonth && newElement.State === state.toUpperCase()) {
                             result.push(newElement);
                         }
 
@@ -202,7 +202,7 @@ exports.fAll = async (req, res) => {
 
                     if (state) {
 
-                        if (newElement.State === state) {
+                        if (newElement.State === state.toUpperCase()) {
                             result.push(newElement);
                         }
                     } else {
