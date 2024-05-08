@@ -230,14 +230,15 @@ exports.fAll = async (req, res) => {
             const newElement = element.postData[newIndex];
 
 
-            const dateStr = newElement.Notice_Date;
-            const [day, month, year] = dateStr.split('-');
-            const dateObj = new Date(`${month} ${day}, ${year}`);
-            const monthName = dateObj.toLocaleString('default', { month: 'long' });
+           
 
 
             if (mymonth) {
 
+                const dateStr = newElement.Notice_Date;
+                const [day, month, year] = dateStr.split('-');
+                const dateObj = new Date(`${month} ${day}, ${year}`);
+                const monthName = dateObj.toLocaleString('default', { month: 'long' });
 
 
                 if (state) {

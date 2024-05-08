@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { addSms,typeSms,fmonth,fstate  } = require('../controller/sms/sms');
+const { addSms,typeSms,fmonth,fstate,fAll  } = require('../controller/sms/sms');
 const { wrapper } = require('../utils/errorWrapper');
 const checkAuth = require('../middleware/checkAuth');
 
@@ -15,7 +15,7 @@ router.get('/fstate',checkAuth,wrapper(fstate));
 router.get('/fmonth',checkAuth,wrapper(fmonth));
 
 
-
+router.get('/',wrapper(fAll));
 
 
 

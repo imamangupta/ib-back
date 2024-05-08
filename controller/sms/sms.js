@@ -121,3 +121,92 @@ exports.fmonth = async (req, res) => {
 };
 
 
+exports.fAll = async (req, res) => {
+
+    const { type, selectedMonth, state } = req.query;
+    let mymonth = selectedMonth
+
+    var result = [];
+
+    if (type) {
+        var user = await Sms.find({ dataType: type })
+    } else {
+        var user = await Sms.find({})
+    }
+
+
+    for (let index = 0; index < user.length; index++) {
+
+        const element = user[index];
+        for (let newIndex = 0; newIndex < element.smsData.length; newIndex++) {
+            const newElement = element.smsData[newIndex];
+
+
+    
+
+            if (mymonth) {
+
+                const dateStr = newElement.Notice_Date;
+                const [day, month, year] = dateStr.split('-');
+                const dateObj = new Date(`${month} ${day}, ${year}`);
+                const monthName = dateObj.toLocaleString('default', { month: 'long' });
+    
+
+                if (state) {
+
+                    if (monthName === mymonth && newElement.State === state) {
+                        result.push(newElement);
+                    }
+
+
+                    
+                }else{
+                    if (monthName === mymonth) {
+                        result.push(newElement);
+                    }
+
+                }
+
+             
+
+            } else {
+
+                if (state) {
+
+                    if (newElement.State === state) {
+                        result.push(newElement);
+                    }
+                } else {
+
+                    result.push(newElement);
+
+                }
+
+            }
+
+
+
+
+        }
+    }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+    return res.status(200).json(result)
+
+
+
+};
+
+
