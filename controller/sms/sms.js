@@ -158,14 +158,14 @@ exports.fAll = async (req, res) => {
 
                 if (state) {
 
-                    if (monthName === mymonth && newElement.State === state.toUpperCase()) {
+                    if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase()) {
                         result.push(newElement);
                     }
 
 
                     
                 }else{
-                    if (monthName === mymonth) {
+                    if (monthName.toLowerCase() === mymonth.toLowerCase()) {
                         result.push(newElement);
                     }
 
