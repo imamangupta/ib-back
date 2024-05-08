@@ -15,7 +15,7 @@ router.get('/fstate',checkAuth,wrapper(fstate));
 router.get('/fmonth',checkAuth,wrapper(fmonth));
 
 
-router.get('/',wrapper(fAll));
+router.get('/',checkAuth,wrapper(fAll));
 
 
 
