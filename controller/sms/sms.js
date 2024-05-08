@@ -123,6 +123,10 @@ exports.fmonth = async (req, res) => {
 
 exports.fAll = async (req, res) => {
 
+
+    try {
+        
+
     const { type, selectedMonth, state } = req.query;
     let mymonth = selectedMonth
 
@@ -206,6 +210,10 @@ exports.fAll = async (req, res) => {
     return res.status(200).json(result)
 
 
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Error to find Data." });
+}
 
 };
 
