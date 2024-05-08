@@ -2,6 +2,7 @@ const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
 const XLSX = require("xlsx");
 const Sms = require('../../models/sms');
+const { setMaxListeners } = require('../../models/email');
 
 // Add sms data by datatype
 exports.addSms = async (req, res) => {
@@ -265,7 +266,7 @@ exports.fAll = async (req, res) => {
 
                     if (city) {
 
-                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase() && newElement.City === city.toUpperCase()) {
+                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.State === state.toUpperCase() && newElement.City.toUpperCase() === city.toUpperCase()) {
                             result.push(newElement);
                         }
 
@@ -283,7 +284,7 @@ exports.fAll = async (req, res) => {
 
                     if (city) {
 
-                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.City === city.toUpperCase()) {
+                        if (monthName.toLowerCase() === mymonth.toLowerCase() && newElement.City.toUpperCase() === city.toUpperCase()) {
                             result.push(newElement);
                         }
 
@@ -314,7 +315,7 @@ exports.fAll = async (req, res) => {
 
                     } else {
 
-                        if (newElement.State === state.toUpperCase()) {
+                        if (newElement.State.toUpperCase() === state.toUpperCase()) {
                             result.push(newElement);
                         }
 
@@ -326,7 +327,7 @@ exports.fAll = async (req, res) => {
 
                     if (city) {
 
-                        if (newElement.City === city.toUpperCase()) {
+                        if (newElement.City.toUpperCase() === city.toUpperCase()) {
                             result.push(newElement);
                         }
 
