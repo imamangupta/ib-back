@@ -8,13 +8,13 @@ const checkAuth = require('../middleware/checkAuth');
 
 
 
-router.post('/addpost',checkAuth,wrapper(addPost));
+router.post('/addpost',wrapper(addPost));
 router.get('/typepost',checkAuth,wrapper(typePost));
 
 router.get('/fstate',checkAuth,wrapper(fstate));
 router.get('/fmonth',checkAuth,wrapper(fmonth));
 
-router.get('/',checkAuth,wrapper(fAll));
+router.get('/',wrapper(fAll));
 
 
 
