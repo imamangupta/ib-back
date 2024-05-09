@@ -253,7 +253,7 @@ exports.fAll = async (req, res) => {
 
 
 
-    return res.status(200).json(result)
+    return res.status(200).json(result.length)
 
     // } catch (error) {
     //     console.error(error);
