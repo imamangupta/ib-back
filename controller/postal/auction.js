@@ -75,58 +75,11 @@ exports.addPost = async (req, res) => {
                     rowData[columnName] = cellValue;
                 }
 
-                // const post = await PostalAuction.create({rowData});
-
-
-                // const post = await PostalAuction.create({
-                //     SR_NO: rowData.SR_NO,
-                //     FILENAME: rowData.FILENAME,
-                //     PROSPECTNO: rowData.PROSPECTNO,
-                //     CUST_NAME: rowData.CUST_NAME,
-                //     ADD1: rowData.ADD1,
-                //     ADD2: rowData.ADD2,
-                //     ADD3: rowData.ADD3,
-                //     LANDMARK: rowData.LANDMARK,
-                //     PINCODE: rowData.PINCODE,
-                //     CITY: rowData.CITY,
-                //     STATE1: rowData.STATE1,
-                //     MOBILE_NO: rowData.MOBILE_NO,
-                //     FORECLOSURE_AMNT: rowData.FORECLOSURE_AMNT,
-                //     FORCLOSURE_AMNT_IN_WORDS: rowData.FORCLOSURE_AMNT_IN_WORDS,
-                //     POS: rowData.POS,
-                //     POS_AMNT_IN_WORDS: rowData.POS_AMNT_IN_WORDS,
-                //     STATE: rowData.STATE,
-                //     ZONE: rowData.ZONE,
-                //     NOTICE_TYPE: rowData.NOTICE_TYPE,
-                //     LOCATION: rowData.LOCATION,
-                //     NAME: rowData.NAME,
-                //     BM_CODE: rowData.BM_CODE,
-                //     BM_NAME: rowData.BM_NAME,
-                //     CUID: rowData.CUID,
-                //     NOTICE_DATE: rowData.NOTICE_DATE,
-                //     OLDNOTICE_DATE: rowData.OLDNOTICE_DATE,
-                //     DDD: rowData.DDD,
-                //     FFF: rowData.FFF,
-                //     NOTICE_REF_NO: rowData.NOTICE_REF_NO,
-                //     BAR_CODE: rowData.BAR_CODE,
-                //     NOTICE_URL: rowData.NOTICE_URL
-            
-                // })
-
-
-
-
                 result.push(rowData);
             }
 
             const post = await PostalAuction.insertMany(result)
                 
-
-
-
-
-
-
             return res.status(200).json({ message: "Success"});
 
         } catch (error) {
@@ -136,3 +89,28 @@ exports.addPost = async (req, res) => {
     });
 
 };
+
+
+exports.fAll = async (req, res) => {
+
+
+    const { dataType, myMonth } = req.query;
+
+   
+
+    let length = await PostalAuction.countDocuments({STATE:"DELHI"})
+    let AuctionData = await PostalAuction.find({ STATE: "DELHI" }).skip(50).limit(50);
+
+
+
+
+
+    return res.status(200).json({length,AuctionData})
+
+
+}
+
+
+
+
+

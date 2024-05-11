@@ -101,6 +101,7 @@ const postalAuctionSchema = new mongoose.Schema({
 
 })
 
+// postalAuctionSchema.index({STATE:"text"});
 const PostalAuction = mongoose.model('postalAuction', postalAuctionSchema);
 PostalAuction.createIndexes();
 module.exports = PostalAuction;
