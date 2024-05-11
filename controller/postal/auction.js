@@ -28,7 +28,7 @@ exports.addPost = async (req, res) => {
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert the sheet to JSON
 
             // Process the data and perform necessary operations
-            // const result = [];
+            const result = [];
             // Extract column names from the first row
             const columnNames = [
                 'SR_NO',
@@ -75,7 +75,8 @@ exports.addPost = async (req, res) => {
                     rowData[columnName] = cellValue;
                 }
 
-                const post = await PostalAuction.create({rowData});
+                // const post = await PostalAuction.create({rowData});
+
 
                 // const post = await PostalAuction.create({
                 //     SR_NO: rowData.SR_NO,
@@ -115,8 +116,16 @@ exports.addPost = async (req, res) => {
 
 
 
-                // result.push(rowData);
+                result.push(rowData);
             }
+
+            const post = await PostalAuction.insertMany(result)
+                
+
+
+
+
+
 
             return res.status(200).json({ message: "Success"});
 
