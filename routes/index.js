@@ -13,6 +13,9 @@ router.use('/sms', sms);
 const post = require('./post')
 router.use('/post', post);
 
+const postalAuction = require('./postal/auction')
+router.use('/postal', postalAuction);
+
 
 
 
