@@ -1,13 +1,12 @@
 const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
 const XLSX = require("xlsx");
-const PostalAuction = require('../../models/postalAuction');
+const PostalDeficit = require('../../models/postalDeficit');
 
 
 
 // working...
 exports.addPost = async (req, res) => {
-
 
     upload.single("excelFile")(req, res, async (err) => {
         if (err) {
@@ -16,8 +15,8 @@ exports.addPost = async (req, res) => {
         }
 
         const { path: filePath } = req.file;
-        const { dataType } = req.body;
-        console.log(dataType);
+        // const { dataType } = req.body;
+        // console.log(dataType);
 
         try {
             // Read the Excel file using your preferred library
@@ -31,37 +30,37 @@ exports.addPost = async (req, res) => {
             const result = [];
             // Extract column names from the first row
             const columnNames = [
-                'SR_NO',
-                'FILENAME',
-                'PROSPECTNO',
-                'CUST_NAME',
+                'SERIAL_NO',
+                'PROSPECT_NUMBER',
+                'CUSTOMER_NAME',
                 'ADD1',
                 'ADD2',
                 'ADD3',
                 'LANDMARK',
                 'PINCODE',
                 'CITY',
-                'STATE1',
                 'MOBILE_NO',
-                'FORECLOSURE_AMNT',
-                'FORCLOSURE_AMNT_IN_WORDS',
-                'POS',
-                'POS_AMNT_IN_WORDS',
-                'STATE',
-                'ZONE',
-                'NOTICE_TYPE',
-                'LOCATION',
                 'NAME',
-                'BM_CODE',
-                'BM_NAME',
                 'CUID',
+                'STATE',
+                'GL_IDS',
+                'DEFICIT_AMOUNT',
+                'DEFICIT_AMOUNT_IN_WORDS',
+                'FORECLOSURE_AMOUNT',
+                'AUCTION_PROCEEDS',
+                'LREGION_CODE',
+                'SUTRACODE',
+                'BRANCH',
+                'LOCATION',
+                'MONTH',
                 'NOTICE_DATE',
-                'OLDNOTICE_DATE',
+                'OLD_NOTICE_DATE',
                 'DDD',
-                'FFF',
-                'NOTICE_REF_NO',
-                'BAR_CODE',
-                'NOTICE_URL',
+                'EEE',
+                'NOTICE_REFERENCE_NUMBER',
+                'BARCODE',
+                'NoticeUrl'
+                
             ];
 
             // Iterate over each row (excluding the first row)
@@ -78,7 +77,7 @@ exports.addPost = async (req, res) => {
                 result.push(rowData);
             }
 
-            const post = await PostalAuction.insertMany(result)
+            const post = await PostalDeficit.insertMany(result)
 
             return res.status(200).json({ message: "Success" });
 
@@ -87,8 +86,9 @@ exports.addPost = async (req, res) => {
             return res.status(500).json({ error: "Error reading the Excel file" });
         }
     });
-
 };
+
+
 
 
 
@@ -100,46 +100,39 @@ exports.fAll = async (req, res) => {
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
 
-    // let stateName = state.toUpperCase();
-    // let cityName = city.toUpperCase();
-
-    // const firstThreeLetters = selectedMonth.slice(0, 3);
-    // const regexMonth = new RegExp(firstThreeLetters, 'i');
-
-
     try {
 
 
-      
-            let query = {  };
 
-            if (selectedMonth) {
-              
-                const firstThreeLetters = selectedMonth.slice(0, 3);
-                const regexMonth = new RegExp(firstThreeLetters, 'i');
-                query.NOTICE_DATE =  { $regex: regexMonth };
-            }
+        let query = {};
 
-            if (state) {
-                query.STATE =  { $regex: state };
-                // let stateName = state.toUpperCase();
-                // query.STATE = stateName;
-            }
+        if (selectedMonth) {
 
-            if (city) {
-                query.CITY =  { $regex: city };
-                // let stateName = city.toUpperCase();
-                // query.CITY = stateName;
-            }
+            const firstThreeLetters = selectedMonth.slice(0, 3);
+            const regexMonth = new RegExp(firstThreeLetters, 'i');
+            query.NOTICE_DATE = { $regex: regexMonth };
+        }
 
+        if (state) {
+            query.STATE = { $regex: state };
+            // let stateName = state.toUpperCase();
+            // query.STATE = stateName;
+        }
 
-            let length = await PostalAuction.countDocuments(query)
-            let AuctionData = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
-
-            return res.status(200).json({ length, AuctionData })
+        if (city) {
+            query.CITY = { $regex: city };
+            // let cityName = city.toUpperCase();
+            // query.CITY = city;
+        }
 
 
-      
+        let length = await PostalDeficit.countDocuments(query)
+        let AuctionData = await PostalDeficit.find(query).skip(skipNum).limit(limitNum);
+
+        return res.status(200).json({ length, AuctionData })
+
+
+
 
 
     } catch (error) {

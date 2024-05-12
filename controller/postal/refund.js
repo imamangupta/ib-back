@@ -1,7 +1,7 @@
 const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
 const XLSX = require("xlsx");
-const PostalAuction = require('../../models/postalAuction');
+const postalRefund = require('../../models/postalRefund');
 
 
 
@@ -78,7 +78,7 @@ exports.addPost = async (req, res) => {
                 result.push(rowData);
             }
 
-            const post = await PostalAuction.insertMany(result)
+            const post = await postalRefund.insertMany(result)
 
             return res.status(200).json({ message: "Success" });
 
@@ -121,20 +121,18 @@ exports.fAll = async (req, res) => {
             }
 
             if (state) {
-                query.STATE =  { $regex: state };
-                // let stateName = state.toUpperCase();
-                // query.STATE = stateName;
+                let stateName = state.toUpperCase();
+                query.STATE = stateName;
             }
 
             if (city) {
-                query.CITY =  { $regex: city };
-                // let stateName = city.toUpperCase();
-                // query.CITY = stateName;
+                let stateName = city.toUpperCase();
+                query.CITY = stateName;
             }
 
 
-            let length = await PostalAuction.countDocuments(query)
-            let AuctionData = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
+            let length = await postalRefund.countDocuments(query)
+            let AuctionData = await postalRefund.find(query).skip(skipNum).limit(limitNum);
 
             return res.status(200).json({ length, AuctionData })
 
