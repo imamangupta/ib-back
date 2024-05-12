@@ -111,111 +111,32 @@ exports.fAll = async (req, res) => {
 
         if (type === "auction") {
 
+
+            let query = {  };
+
             if (selectedMonth) {
-
-                if (state) {
-
-                    if (city) {
-
-                        let stateName = state.toUpperCase();
-                        let cityName = city.toUpperCase();
-                        const firstThreeLetters = selectedMonth.slice(0, 3);
-                        const regexMonth = new RegExp(firstThreeLetters, 'i');
-
-                        let length = await PostalAuction.countDocuments({ STATE: stateName, CITY: cityName, NOTICE_DATE: { $regex: regexMonth } })
-                        let AuctionData = await PostalAuction.find({ STATE: stateName, CITY: cityName, NOTICE_DATE: { $regex: regexMonth } }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-                    } else {
-                        let stateName = state.toUpperCase();
-                      
-                        const firstThreeLetters = selectedMonth.slice(0, 3);
-                        const regexMonth = new RegExp(firstThreeLetters, 'i');
-
-                        let length = await PostalAuction.countDocuments({ STATE: stateName, NOTICE_DATE: { $regex: regexMonth } })
-                        let AuctionData = await PostalAuction.find({ STATE: stateName, NOTICE_DATE: { $regex: regexMonth } }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-
-                    }
-
-
-                } else {
-
-                    if (city) {
-                        
-                        let cityName = city.toUpperCase();
-                        const firstThreeLetters = selectedMonth.slice(0, 3);
-                        const regexMonth = new RegExp(firstThreeLetters, 'i');
-                        let length = await PostalAuction.countDocuments({ CITY: cityName, NOTICE_DATE: { $regex: regexMonth } })
-                        let AuctionData = await PostalAuction.find({ CITY: cityName, NOTICE_DATE: { $regex: regexMonth } }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-
-                    } else {
-                     
-                        const firstThreeLetters = selectedMonth.slice(0, 3);
-                        const regexMonth = new RegExp(firstThreeLetters, 'i');
-
-                        let length = await PostalAuction.countDocuments({ NOTICE_DATE: { $regex: regexMonth } })
-                        let AuctionData = await PostalAuction.find({ NOTICE_DATE: { $regex: regexMonth } }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-
-                    }
-                }
-
-
-            } else {
-
-                if (state) {
-
-                    if (city) {
-                        let stateName = state.toUpperCase();
-                        let cityName = city.toUpperCase();
-                       
-
-                        let length = await PostalAuction.countDocuments({ STATE: stateName, CITY: cityName })
-                        let AuctionData = await PostalAuction.find({ STATE: stateName, CITY: cityName }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-                    } else {
-                      
-                        let cityName = city.toUpperCase();
-
-                        let length = await PostalAuction.countDocuments({ CITY: cityName })
-                        let AuctionData = await PostalAuction.find({ CITY: cityName }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-                    }
-
-
-                } else {
-
-                    if (city) {
-                       
-                        let cityName = city.toUpperCase();
-                        let length = await PostalAuction.countDocuments({ CITY: cityName })
-                        let AuctionData = await PostalAuction.find({ CITY: cityName }).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-                    } else {
-
-                        let length = await PostalAuction.countDocuments({})
-                        let AuctionData = await PostalAuction.find({}).skip(skipNum).limit(limitNum);
-
-                        return res.status(200).json({ length, AuctionData })
-
-                    }
-                }
+              
+                const firstThreeLetters = selectedMonth.slice(0, 3);
+                const regexMonth = new RegExp(firstThreeLetters, 'i');
+                query.NOTICE_DATE =  { $regex: regexMonth };
             }
+
+            if (state) {
+                let stateName = state.toUpperCase();
+                query.STATE = stateName;
+            }
+
+            if (city) {
+                let stateName = city.toUpperCase();
+                query.CITY = stateName;
+            }
+
+
+            let length = await PostalAuction.countDocuments(query)
+            let AuctionData = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
+
+            return res.status(200).json({ length, AuctionData })
+
 
         } else {
 
