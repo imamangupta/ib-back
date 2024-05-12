@@ -91,10 +91,11 @@ exports.addPost = async (req, res) => {
 };
 
 
+
 exports.fAll = async (req, res) => {
 
 
-    const { type, selectedMonth, state, city, skip, limit } = req.query;
+    const { selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
@@ -109,9 +110,7 @@ exports.fAll = async (req, res) => {
     try {
 
 
-        if (type === "auction") {
-
-
+      
             let query = {  };
 
             if (selectedMonth) {
@@ -138,11 +137,7 @@ exports.fAll = async (req, res) => {
             return res.status(200).json({ length, AuctionData })
 
 
-        } else {
-
-            return res.status(200).json({ error: "auction is missing..." })
-
-        }
+      
 
 
     } catch (error) {

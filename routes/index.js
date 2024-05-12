@@ -14,7 +14,7 @@ const post = require('./post')
 router.use('/post', post);
 
 const postalAuction = require('./postal/auction')
-router.use('/postal', postalAuction);
+router.use('/postal/auction', postalAuction);
 
 
 
