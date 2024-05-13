@@ -101,7 +101,7 @@ exports.fAll = async (req, res) => {
     let limitNum = parseInt(limit);
 
     try {
-        if (!skip && !limit) {
+        if (!skip || !limit) {
             return res.status(200).json({ error:"undefined skip & limit" })
         }
 

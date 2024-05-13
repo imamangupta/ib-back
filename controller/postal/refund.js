@@ -107,7 +107,7 @@ exports.fAll = async (req, res) => {
 
     try {
 
-        if (!skip && !limit) {
+        if (!skip || !limit) {
             return res.status(200).json({ error:"undefined skip & limit" })
         }
 
