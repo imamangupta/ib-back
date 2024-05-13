@@ -95,12 +95,15 @@ exports.addPost = async (req, res) => {
 exports.fAll = async (req, res) => {
 
 
-    const { selectedMonth, state, city, skip, limit } = req.query;
+    const { type,selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
 
     try {
+        if (!skip && !limit) {
+            return res.status(200).json({ error:"undefined skip & limit" })
+        }
 
 
 
@@ -126,21 +129,15 @@ exports.fAll = async (req, res) => {
         }
 
 
-        let length = await PostalDeficit.countDocuments(query)
-        let AuctionData = await PostalDeficit.find(query).skip(skipNum).limit(limitNum);
+        let count = await PostalDeficit.countDocuments(query)
+        let data = await PostalDeficit.find(query).skip(skipNum).limit(limitNum);
 
-        return res.status(200).json({ length, AuctionData })
-
-
-
-
+        return res.status(200).json({ count, data })
 
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "some thing went worng..." });
     }
-
-
 
 }
 

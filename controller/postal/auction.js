@@ -109,37 +109,39 @@ exports.fAll = async (req, res) => {
 
     try {
 
-
-      
-            let query = {  };
-
-            if (selectedMonth) {
-              
-                const firstThreeLetters = selectedMonth.slice(0, 3);
-                const regexMonth = new RegExp(firstThreeLetters, 'i');
-                query.NOTICE_DATE =  { $regex: regexMonth };
-            }
-
-            if (state) {
-                query.STATE =  { $regex: state };
-                // let stateName = state.toUpperCase();
-                // query.STATE = stateName;
-            }
-
-            if (city) {
-                query.CITY =  { $regex: city };
-                // let stateName = city.toUpperCase();
-                // query.CITY = stateName;
-            }
+        if (!skip && !limit) {
+            return res.status(200).json({ error:"undefine skip & limit" })
+            
+        }
 
 
-            let length = await PostalAuction.countDocuments(query)
-            let AuctionData = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
 
-            return res.status(200).json({ length, AuctionData })
+        let query = {};
+
+        if (selectedMonth) {
+
+            const firstThreeLetters = selectedMonth.slice(0, 3);
+            const regexMonth = new RegExp(firstThreeLetters, 'i');
+            query.NOTICE_DATE = { $regex: regexMonth };
+        }
+
+        if (state) {
+            query.STATE = { $regex: state };
+            // let stateName = state.toUpperCase();
+            // query.STATE = stateName;
+        }
+
+        if (city) {
+            query.CITY = { $regex: city };
+            // let stateName = city.toUpperCase();
+            // query.CITY = stateName;
+        }
 
 
-      
+        let count = await PostalAuction.countDocuments(query)
+        let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
+
+        return res.status(200).json({ count, data })
 
 
     } catch (error) {

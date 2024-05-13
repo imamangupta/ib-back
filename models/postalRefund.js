@@ -1,16 +1,13 @@
 const mongoose = require('mongoose')
 
 const postalRefundSchema = new mongoose.Schema({
-    SR_NO: {
+    SERIAL_NO: {
         type: String,
     },
     FILENAME: {
         type: String,
     },
-    PROSPECTNO: {
-        type: String,
-    },
-    CUST_NAME: {
+    CUSTOMER_NAME: {
         type: String,
     },
     ADD1: {
@@ -31,64 +28,64 @@ const postalRefundSchema = new mongoose.Schema({
     CITY: {
         type: String,
     },
-    STATE1: {
-        type: String,
-    },
     MOBILE_NO: {
-        type: String,
-    },
-    FORECLOSURE_AMNT: {
-        type: String,
-    },
-    FORCLOSURE_AMNT_IN_WORDS: {
-        type: String,
-    },
-    POS: {
-        type: String,
-    },
-    POS_AMNT_IN_WORDS: {
-        type: String,
-    },
-    STATE: {
-        type: String,
-    },
-    ZONE: {
-        type: String,
-    },
-    NOTICE_TYPE: {
-        type: String,
-    },
-    LOCATION: {
         type: String,
     },
     NAME: {
         type: String,
     },
-    BM_CODE: {
-        type: String,
-    },
-    BM_NAME: {
-        type: String,
-    },
     CUID: {
+        type: String,
+    },
+    STATE: {
+        type: String,
+    },
+    GL_IDS: {
+        type: String,
+    },
+    REFUND_AMOUNT: {
+        type: String,
+    },
+    REFUND_AMOUNT_IN_WORDS: {
+        type: String,
+    },
+    FORECLOSURE_AMOUNT: {
+        type: String,
+    },
+    AUCTION_PROCEEDS: {
+        type: String,
+    },
+    LREGION_CODE: {
+        type: String,
+    },
+    SUTRACODE: {
+        type: String,
+    },
+    BRANCH: {
+        type: String,
+    },
+    LOCATION: {
+        type: String,
+    },
+    MONTH: {
         type: String,
     },
     NOTICE_DATE: {
         type: String,
     },
-    OLDNOTICE_DATE: {
+    OLD_NOTICE_DATE: {
         type: String,
     },
     DDD: {
         type: String,
     },
-    FFF: {
+    EEE: {
         type: String,
     },
-    NOTICE_REF_NO: {
+    NOTICE_REFERENCE_NUMBER: {
         type: String,
     },
-    BAR_CODE: {
+    BARCODE: {
         type: String,
     },
     NOTICE_URL: {

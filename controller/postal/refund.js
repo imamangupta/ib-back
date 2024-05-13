@@ -16,8 +16,7 @@ exports.addPost = async (req, res) => {
         }
 
         const { path: filePath } = req.file;
-        const { dataType } = req.body;
-        console.log(dataType);
+
 
         try {
             // Read the Excel file using your preferred library
@@ -31,39 +30,38 @@ exports.addPost = async (req, res) => {
             const result = [];
             // Extract column names from the first row
             const columnNames = [
-                'SR_NO',
+                'SERIAL_NO',
                 'FILENAME',
-                'PROSPECTNO',
-                'CUST_NAME',
+                'CUSTOMER_NAME',
                 'ADD1',
                 'ADD2',
                 'ADD3',
                 'LANDMARK',
                 'PINCODE',
                 'CITY',
-                'STATE1',
                 'MOBILE_NO',
-                'FORECLOSURE_AMNT',
-                'FORCLOSURE_AMNT_IN_WORDS',
-                'POS',
-                'POS_AMNT_IN_WORDS',
-                'STATE',
-                'ZONE',
-                'NOTICE_TYPE',
-                'LOCATION',
                 'NAME',
-                'BM_CODE',
-                'BM_NAME',
                 'CUID',
+                'STATE',
+                'GL_IDS',
+                'REFUND_AMOUNT',
+                'REFUND_AMOUNT_IN_WORDS',
+                'FORECLOSURE_AMOUNT',
+                'AUCTION_PROCEEDS',
+                'LREGION_CODE',
+                'SUTRACODE',
+                'BRANCH',
+                'LOCATION',
+                'MONTH',
                 'NOTICE_DATE',
-                'OLDNOTICE_DATE',
+                'OLD_NOTICE_DATE',
                 'DDD',
-                'FFF',
-                'NOTICE_REF_NO',
-                'BAR_CODE',
-                'NOTICE_URL',
-            ];
+                'EEE',
+                'NOTICE_REFERENCE_NUMBER',
+                'BARCODE',
+                'NOTICE_URL'
 
+            ];
             // Iterate over each row (excluding the first row)
             for (let i = 1; i < data.length; i++) {
                 const rowData = {};
@@ -109,35 +107,41 @@ exports.fAll = async (req, res) => {
 
     try {
 
-
-      
-            let query = {  };
-
-            if (selectedMonth) {
-              
-                const firstThreeLetters = selectedMonth.slice(0, 3);
-                const regexMonth = new RegExp(firstThreeLetters, 'i');
-                query.NOTICE_DATE =  { $regex: regexMonth };
-            }
-
-            if (state) {
-                let stateName = state.toUpperCase();
-                query.STATE = stateName;
-            }
-
-            if (city) {
-                let stateName = city.toUpperCase();
-                query.CITY = stateName;
-            }
+        if (!skip && !limit) {
+            return res.status(200).json({ error:"undefined skip & limit" })
+        }
 
 
-            let length = await postalRefund.countDocuments(query)
-            let AuctionData = await postalRefund.find(query).skip(skipNum).limit(limitNum);
 
-            return res.status(200).json({ length, AuctionData })
+        let query = {};
+
+        if (selectedMonth) {
+
+            const firstThreeLetters = selectedMonth.slice(0, 3);
+            const regexMonth = new RegExp(firstThreeLetters, 'i');
+            query.NOTICE_DATE = { $regex: regexMonth };
+        }
+
+        if (state) {
+            query.STATE = { $regex: state };
+            // let stateName = state.toUpperCase();
+            // query.STATE = stateName;
+        }
+
+        if (city) {
+            query.CITY = { $regex: city };
+            // let cityName = city.toUpperCase();
+            // query.CITY = city;
+        }
 
 
-      
+        let count = await postalRefund.countDocuments(query)
+        let data = await postalRefund.find(query).skip(skipNum).limit(limitNum);
+
+        return res.status(200).json({ count, data })
+
+
+
 
 
     } catch (error) {
