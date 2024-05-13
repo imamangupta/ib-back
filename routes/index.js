@@ -13,6 +13,8 @@ router.use('/sms', sms);
 const post = require('./post')
 router.use('/post', post);
 
+
+
 const postalAuction = require('./postal/auction')
 router.use('/postal/auction', postalAuction);
 
@@ -21,6 +23,16 @@ router.use('/postal/deficit',postalDeficit );
 
 const postalRefund = require('./postal/refund')
 router.use('/postal/refund', postalRefund);
+
+
+const smsAuction = require('./sms/auction')
+router.use('/sms/auction', smsAuction);
+
+const smsDeficit = require('./sms/deficit')
+router.use('/sms/deficit',smsDeficit );
+
+const smsRefund = require('./sms/refund')
+router.use('/sms/refund', smsRefund);
 
 
 
