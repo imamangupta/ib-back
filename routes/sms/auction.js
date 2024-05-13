@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 const { addPost,fAll} = require('../../controller/sms/auction');
 const { wrapper } = require('../../utils/errorWrapper');
+const checkAuth = require('../../middleware/checkAuth');
 
 
-router.post('/',wrapper(addPost));
-router.get('/',wrapper(fAll));
+
+router.post('/',checkAuth,wrapper(addPost));
+router.get('/',checkAuth,wrapper(fAll));
 
 
 
