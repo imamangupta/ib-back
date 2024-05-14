@@ -110,22 +110,26 @@ exports.fAll = async (req, res) => {
         let query = {};
 
         if (selectedMonth) {
-
             const firstThreeLetters = selectedMonth.slice(0, 3);
             const regexMonth = new RegExp(firstThreeLetters, 'i');
             query.NOTICE_DATE = { $regex: regexMonth };
         }
 
         if (state) {
-            query.STATE = { $regex: state };
-            // let stateName = state.toUpperCase();
-            // query.STATE = stateName;
+            const regexState = new RegExp(state, 'i');
+            query.STATE = { $regex: regexState };
+        }
+
+        if (filename) {
+            const regexFilename = new RegExp(filename, 'i');
+            query.FILENAME = { $regex: regexFilename };
         }
 
         if (city) {
-            query.CITY = { $regex: city };
-            // let cityName = city.toUpperCase();
-            // query.CITY = city;
+            const regexCity = new RegExp(city, 'i');
+            query.CITY = { $regex: regexCity };
+            // let stateName = city.toUpperCase();
+            // query.CITY = stateName;
         }
 
 
