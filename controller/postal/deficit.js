@@ -95,7 +95,7 @@ exports.addPost = async (req, res) => {
 exports.fAll = async (req, res) => {
 
 
-    const { type,selectedMonth, state, city, skip, limit } = req.query;
+    const { filename,selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
