@@ -17,7 +17,6 @@ exports.allData = async (req, res) => {
         }
 
 
-
         let query = {};
 
         if (selectedMonth) {
@@ -42,33 +41,36 @@ exports.allData = async (req, res) => {
             query.CITY = { $regex: regexCity };
         }
 
-
-
         let count1 = await PostalAuction.countDocuments(query)
-        let data1 = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
-
         let count2 = await PostalDeficit.countDocuments(query)
-        let data2 = await PostalDeficit.find(query).skip(skipNum).limit(limitNum);
-
         let count3 = await PostalRefund.countDocuments(query)
-        let data3 = await PostalRefund.find(query).skip(skipNum).limit(limitNum);
+        
 
-        let count = count1+count2+count3;
-      
-        // Combine the arrays
-        const data = data1.concat(data2, data3);
+        if (skipNum < count1) {
 
-        return res.status(200).json({ count, data })
+            let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
+            let count = count1+count2+count3;
+
+            return res.status(200).json({ count, data })
+            
+        }else if(skipNum - count1 < count2){
+
+            let data = await PostalDeficit.find(query).skip(skipNum - count1).limit(limitNum);
+            let count = count1+count2+count3;
+
+            return res.status(200).json({ count, data })
+
+        }else{
+
+            let data = await PostalRefund.find(query).skip((skipNum - count1) - count2).limit(limitNum);
+            let count = count1+count2+count3;
+
+            return res.status(200).json({ count, data })
+
+        }
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "some thing went worng..." });
     }
-
-
-
 }
-
-
-
-
-
