@@ -28,6 +28,9 @@ const postalRefund = require('./postal/refund')
 router.use('/postal/refund', postalRefund);
 
 
+const smsAll = require('./sms/all')
+router.use('/sms/all', smsAll);
+
 const smsAuction = require('./sms/auction')
 router.use('/sms/auction', smsAuction);
 
@@ -36,6 +39,7 @@ router.use('/sms/deficit',smsDeficit );
 
 const smsRefund = require('./sms/refund')
 router.use('/sms/refund', smsRefund);
+
 
 
 

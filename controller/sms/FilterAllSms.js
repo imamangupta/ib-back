@@ -1,6 +1,6 @@
-const PostalAuction = require('../../models/postalAuction');
-const PostalDeficit = require('../../models/postalDeficit');
-const PostalRefund = require('../../models/postalRefund');
+const PostalAuction = require('../../models/smsAuction');
+const PostalDeficit = require('../../models/smsDeficit');
+const PostalRefund = require('../../models/smsRefund');
 
 exports.allData = async (req, res) => {
 
@@ -76,8 +76,6 @@ exports.allData = async (req, res) => {
 }
 
 exports.postalDataDownload = async (req, res) => {
-
-
 
 
   try {
