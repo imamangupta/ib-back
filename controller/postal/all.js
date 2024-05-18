@@ -77,7 +77,7 @@ exports.allData = async (req, res) => {
 
 exports.postalDataDownload = async (req, res) => {
 
-    const { selectedMonth, state, city, filename } = req.query;
+    const { type,selectedMonth, state, city, filename } = req.query;
 
 
 
@@ -106,18 +106,47 @@ exports.postalDataDownload = async (req, res) => {
         query.CITY = { $regex: regexCity };
     }
 
-    let count1 = await PostalAuction.countDocuments(query)
-    let count2 = await PostalDeficit.countDocuments(query)
-    let count3 = await PostalRefund.countDocuments(query)
+    if(type){
+
+        if(type==="auction"){
+
+            let count = await PostalAuction.countDocuments(query)
+            let data = await PostalAuction.find(query)
+            return res.status(200).json({ count, data })
+
+        }else if(type==="deficit"){
+            let count = await PostalDeficit.countDocuments(query)
+            let data = await PostalDeficit.find(query)
+            return res.status(200).json({ count, data })
+            
+        }else if(type === "refund"){
+            let count = await PostalRefund.countDocuments(query)
+            let data = await PostalRefund.find(query)
+            return res.status(200).json({ count, data })
+            
+        }else{
+            return res.status(500).json({ error:"please enter a proper data." })
+            
+        }
+
+
+
+    }else{
+        let count1 = await PostalAuction.countDocuments(query)
+        let count2 = await PostalDeficit.countDocuments(query)
+        let count3 = await PostalRefund.countDocuments(query)
+        
+        let data1 = await PostalAuction.find(query)
+        let data2 = await PostalDeficit.find(query)
+        let data3 = await PostalRefund.find(query)
     
-    let data1 = await PostalAuction.find(query)
-    let data2 = await PostalDeficit.find(query)
-    let data3 = await PostalRefund.find(query)
+        let count = count1+count2+count3;
+        let data = data1.concat(data2,data3)
+    
+        return res.status(200).json({ count, data })
+    }
 
-    let count = count1+count2+count3;
-    let data = data1.concat(data2,data3)
-
-    return res.status(200).json({ count, data })
+  
 
   } catch (error) {
     console.error('Error writing CSV file', error);
