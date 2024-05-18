@@ -77,12 +77,48 @@ exports.allData = async (req, res) => {
 
 exports.postalDataDownload = async (req, res) => {
 
+    const { selectedMonth, state, city, filename } = req.query;
 
 
 
   try {
-  
-    res.status(200).send({success:'An error occurred'});
+    let query = {};
+
+    if (selectedMonth) {
+
+        const firstThreeLetters = selectedMonth.slice(0, 3);
+        const regexMonth = new RegExp(firstThreeLetters, 'i');
+        query.NOTICE_DATE = { $regex: regexMonth };
+    }
+
+    if (state) {
+        const regexState = new RegExp(state, 'i');
+        query.STATE = { $regex: regexState };
+    }
+
+    if (filename) {
+        const regexFilename = new RegExp(filename, 'i');
+        query.FILENAME = { $regex: regexFilename };
+    }
+
+    if (city) {
+        const regexCity = new RegExp(city, 'i');
+        query.CITY = { $regex: regexCity };
+    }
+
+    let count1 = await PostalAuction.countDocuments(query)
+    let count2 = await PostalDeficit.countDocuments(query)
+    let count3 = await PostalRefund.countDocuments(query)
+    
+    let data1 = await PostalAuction.find(query)
+    let data2 = await PostalDeficit.find(query)
+    let data3 = await PostalRefund.find(query)
+
+    let count = count1+count2+count3;
+    let data = data1.concat(data2,data3)
+
+    return res.status(200).json({ count, data })
+
   } catch (error) {
     console.error('Error writing CSV file', error);
 
