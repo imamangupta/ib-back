@@ -67,7 +67,7 @@ exports.allData = async (req, res) => {
 };
 
 exports.postalDataDownload = async (req, res) => {
-  const { selectedMonth, state, city, filename } = req.query;
+  const { type,selectedMonth, state, city, filename } = req.query;
 
   try {
     let query = {};
