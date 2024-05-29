@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const postalAuctionSchema = new mongoose.Schema({
-    SR_NO: {
+    SERIAL_NO: {
         type: String,
     },
     FILENAME: {
         type: String,
     },
-    PROSPECTNO: {
+    PROSPECT_NUMBER: {
         type: String,
     },
-    CUST_NAME: {
+    CUSTOMER_NAME: {
         type: String,
     },
     ADD1: {
@@ -31,25 +31,31 @@ const postalAuctionSchema = new mongoose.Schema({
     CITY: {
         type: String,
     },
+    MOBILE_NUMBER: {
+        type: String,
+    },
+    NAME: {
+        type: String,
+    },
+    CUID: {
+        type: String,
+    },
+    STATE: {
+        type: String,
+    },
     STATE1: {
         type: String,
     },
-    MOBILE_NO: {
+    FORECLOSURE_AMOUNT: {
         type: String,
     },
-    FORECLOSURE_AMNT: {
-        type: String,
-    },
-    FORCLOSURE_AMNT_IN_WORDS: {
+    FORCLOSURE_AMOUNT_IN_WORDS: {
         type: String,
     },
     POS: {
         type: String,
     },
-    POS_AMNT_IN_WORDS: {
-        type: String,
-    },
-    STATE: {
+    POS_AMOUNT_IN_WORDS: {
         type: String,
     },
     ZONE: {
@@ -61,16 +67,10 @@ const postalAuctionSchema = new mongoose.Schema({
     LOCATION: {
         type: String,
     },
-    NAME: {
-        type: String,
-    },
     BM_CODE: {
         type: String,
     },
     BM_NAME: {
-        type: String,
-    },
-    CUID: {
         type: String,
     },
     NOTICE_DATE: {
@@ -85,7 +85,7 @@ const postalAuctionSchema = new mongoose.Schema({
     FFF: {
         type: String,
     },
-    NOTICE_REF_NO: {
+    NOTICE_REFERENCE_NO: {
         type: String,
     },
     BAR_CODE: {
