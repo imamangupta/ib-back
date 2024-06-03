@@ -134,7 +134,7 @@ exports.fAll = async (req, res) => {
 
 
         let count = await PostalDeficit.countDocuments(query)
-        let data = await PostalDeficit.find(query).skip(skipNum).limit(limitNum);
+        let data = await PostalDeficit.find(query).skip(skipNum).limit(limitNum).select('-_id -date -__v');
 
         return res.status(200).json({ count, data })
 

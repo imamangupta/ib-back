@@ -139,7 +139,7 @@ exports.fAll = async (req, res) => {
         }
 
         let count = await PostalAuction.countDocuments(query)
-        let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum);
+        let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('-_id -date -__v');
 
         return res.status(200).json({ count, data })
 
