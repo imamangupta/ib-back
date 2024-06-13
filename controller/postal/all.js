@@ -154,3 +154,43 @@ exports.postalDataDownload = async (req, res) => {
     res.status(500).send('An error occurred');
   }
 }
+
+// get state
+exports.findState = async (req, res) => {
+
+
+  
+
+    try {
+
+        let query = {};
+        const data = await PostalAuction.distinct('STATE');
+
+      
+        return res.status(200).json(data)
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "some thing went worng..." });
+    }
+}
+
+// get state my city
+exports.findCity = async (req, res) => {
+
+    const { state} = req.query;
+  
+
+    try {
+
+        let query = {STATE:state};
+        const data = await PostalAuction.distinct('CITY',query);
+
+      
+        return res.status(200).json(data)
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "some thing went worng..." });
+    }
+}
