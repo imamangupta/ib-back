@@ -16,14 +16,13 @@ exports.allData = async (req, res) => {
             return res.status(200).json({ error:"undefined skip & limit" })
         }
 
-
         let query = {};
 
         if (selectedMonth) {
 
             const firstThreeLetters = selectedMonth.slice(0, 3);
             const regexMonth = new RegExp(firstThreeLetters, 'i');
-            query.NOTICE_DATE = { $regex: regexMonth };
+            query.DATE = { $regex: regexMonth };
         }
 
         if (state) {
@@ -48,21 +47,21 @@ exports.allData = async (req, res) => {
 
         if (skipNum < count1) {
 
-            let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('FILENAME CUSTOMER_NAME NOTICE_URL BAR_CODE MOBILE_NUMBER -_id');
+            let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('-date -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })
             
         }else if(skipNum - count1 < count2){
 
-            let data = await PostalDeficit.find(query).skip(skipNum - count1).limit(limitNum).select('FILENAME CUSTOMER_NAME NOTICE_URL BAR_CODE MOBILE_NUMBER -_id');
+            let data = await PostalDeficit.find(query).skip(skipNum - count1).limit(limitNum).select('-date -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })
 
         }else{
 
-            let data = await PostalRefund.find(query).skip((skipNum - count1) - count2).limit(limitNum).select('FILENAME CUSTOMER_NAME NOTICE_URL BAR_CODE MOBILE_NUMBER -_id');
+            let data = await PostalRefund.find(query).skip((skipNum - count1) - count2).limit(limitNum).select('-date -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })
@@ -129,8 +128,6 @@ exports.postalDataDownload = async (req, res) => {
             
         }
 
-
-
     }else{
         let count1 = await PostalAuction.countDocuments(query)
         let count2 = await PostalDeficit.countDocuments(query)
@@ -146,8 +143,6 @@ exports.postalDataDownload = async (req, res) => {
         return res.status(200).json({ count, data })
     }
 
-  
-
   } catch (error) {
     console.error('Error writing CSV file', error);
 
@@ -158,17 +153,9 @@ exports.postalDataDownload = async (req, res) => {
 // get state
 exports.findState = async (req, res) => {
 
-
-  
-
     try {
-
-        let query = {};
         const data = await PostalAuction.distinct('STATE');
-
-      
         return res.status(200).json(data)
-
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "some thing went worng..." });
@@ -179,16 +166,12 @@ exports.findState = async (req, res) => {
 exports.findCity = async (req, res) => {
 
     const { state} = req.query;
-  
-
     try {
 
         let query = {STATE:state};
         const data = await PostalAuction.distinct('CITY',query);
 
-      
         return res.status(200).json(data)
-
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "some thing went worng..." });

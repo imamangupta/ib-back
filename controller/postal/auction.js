@@ -8,7 +8,6 @@ const PostalAuction = require('../../models/postalAuction');
 // working...
 exports.addPost = async (req, res) => {
 
-
     upload.single("excelFile")(req, res, async (err) => {
         if (err) {
             console.error(err);
@@ -16,8 +15,6 @@ exports.addPost = async (req, res) => {
         }
 
         const { path: filePath } = req.file;
-        const { dataType } = req.body;
-        console.log(dataType);
 
         try {
             // Read the Excel file using your preferred library
@@ -27,48 +24,26 @@ exports.addPost = async (req, res) => {
             const worksheet = workbook.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert the sheet to JSON
 
-            // Process the data and perform necessary operations
             const result = [];
-            // Extract column names from the first row
+            
             const columnNames = [
-                'SERIAL_NO',
                 'FILENAME',
-                'PROSPECT_NUMBER',
-                'CUSTOMER_NAME',
-                'ADD1',
-                'ADD2',
-                'ADD3',
-                'LANDMARK',
-                'PINCODE',
-                'CITY',
-                'MOBILE_NUMBER',
-                'NAME',
-                'CUID',
-                'STATE',
-                'STATE1',
-                'FORECLOSURE_AMOUNT',
-                'FORCLOSURE_AMOUNT_IN_WORDS',
-                'POS',
-                'POS_AMOUNT_IN_WORDS',
-                'ZONE',
-                'NOTICE_TYPE',
-                'LOCATION',
-                'BM_CODE',
-                'BM_NAME',
-                'NOTICE_DATE',
-                'OLDNOTICE_DATE',
-                'DDD',
-                'FFF',
-                'NOTICE_REFERENCE_NO',
-                'BAR_CODE',
                 'NOTICE_URL',
+                'TRACKING_URL',
+                'BARCODE',
+                'STATUS',
+                'CUSTOMER_NAME',
+                'MOBILE_NUMBER',
+                'DATE',
+                'STATE',
+                'CITY'
             ];
 
-            // Iterate over each row (excluding the first row)
+            
             for (let i = 1; i < data.length; i++) {
                 const rowData = {};
 
-                // Iterate over each column
+              
                 for (let j = 0; j < columnNames.length; j++) {
                     const columnName = columnNames[j];
                     const cellValue = data[i][j];
@@ -100,12 +75,6 @@ exports.fAll = async (req, res) => {
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
 
-    // let stateName = state.toUpperCase();
-    // let cityName = city.toUpperCase();
-
-    // const firstThreeLetters = selectedMonth.slice(0, 3);
-    // const regexMonth = new RegExp(firstThreeLetters, 'i');
-
 
     try {
 
@@ -118,7 +87,7 @@ exports.fAll = async (req, res) => {
         if (selectedMonth) {
             const firstThreeLetters = selectedMonth.slice(0, 3);
             const regexMonth = new RegExp(firstThreeLetters, 'i');
-            query.NOTICE_DATE = { $regex: regexMonth };
+            query.DATE = { $regex: regexMonth };
         }
 
         if (state) {
@@ -134,13 +103,11 @@ exports.fAll = async (req, res) => {
         if (city) {
             const regexCity = new RegExp(city, 'i');
             query.CITY = { $regex: regexCity };
-            // let stateName = city.toUpperCase();
-            // query.CITY = stateName;
+           
         }
 
         let count = await PostalAuction.countDocuments(query)
-        let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('FILENAME CUSTOMER_NAME NOTICE_URL BAR_CODE MOBILE_NUMBER -_id');
-        // FILENAME  CUSTOMER_NAME  NOTICE_URL  BAR_CODE  MOBILE_NUMBER
+        let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('-date -_id');
         return res.status(200).json({ count, data })
 
     } catch (error) {
@@ -149,8 +116,3 @@ exports.fAll = async (req, res) => {
     }
 
 }
-
-
-
-
-
