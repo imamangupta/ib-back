@@ -47,21 +47,21 @@ exports.allData = async (req, res) => {
 
         if (skipNum < count1) {
 
-            let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('-date -__v -_id');
+            let data = await PostalAuction.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })
             
         }else if(skipNum - count1 < count2){
 
-            let data = await PostalDeficit.find(query).skip(skipNum - count1).limit(limitNum).select('-date -__v -_id');
+            let data = await PostalDeficit.find(query).skip(skipNum - count1).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })
 
         }else{
 
-            let data = await PostalRefund.find(query).skip((skipNum - count1) - count2).limit(limitNum).select('-date -__v -_id');
+            let data = await PostalRefund.find(query).skip((skipNum - count1) - count2).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
             let count = count1+count2+count3;
 
             return res.status(200).json({ count, data })

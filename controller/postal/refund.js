@@ -140,7 +140,7 @@ exports.fAll = async (req, res) => {
 
 
         let count = await postalRefund.countDocuments(query)
-        let data = await postalRefund.find(query).skip(skipNum).limit(limitNum).select('FILENAME CUSTOMER_NAME NOTICE_URL BAR_CODE MOBILE_NUMBER -_id');
+        let data = await postalRefund.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
 
         return res.status(200).json({ count, data })
 
