@@ -30,37 +30,16 @@ exports.addPost = async (req, res) => {
             const result = [];
             // Extract column names from the first row
             const columnNames = [
-                'SERIAL_NO',
                 'FILENAME',
-                'CUSTOMER_NAME',
-                'ADD1',
-                'ADD2',
-                'ADD3',
-                'LANDMARK',
-                'PINCODE',
-                'CITY',
-                'MOBILE_NO',
-                'NAME',
-                'CUID',
-                'STATE',
-                'GL_IDS',
-                'REFUND_AMOUNT',
-                'REFUND_AMOUNT_IN_WORDS',
-                'FORECLOSURE_AMOUNT',
-                'AUCTION_PROCEEDS',
-                'LREGION_CODE',
-                'SUTRACODE',
-                'BRANCH',
-                'LOCATION',
-                'MONTH',
-                'NOTICE_DATE',
-                'OLD_NOTICE_DATE',
-                'DDD',
-                'EEE',
-                'NOTICE_REFERENCE_NUMBER',
+                'NOTICE_URL',
+                'TRACKING_URL',
                 'BARCODE',
-                'NOTICE_URL'
-
+                'STATUS',
+                'CUSTOMER_NAME',
+                'MOBILE_NUMBER',
+                'DATE',
+                'STATE',
+                'CITY'
             ];
             // Iterate over each row (excluding the first row)
             for (let i = 1; i < data.length; i++) {

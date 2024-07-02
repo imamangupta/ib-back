@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const postalRefundSchema = new mongoose.Schema({
+const postalSchema = new mongoose.Schema({
     FILENAME: {
         type: String,
     },
@@ -36,9 +36,8 @@ const postalRefundSchema = new mongoose.Schema({
         default: Date.now
     }
 
-
 })
 
-const PostalFefund = mongoose.model('postalRefund', postalRefundSchema);
-PostalFefund.createIndexes();
-module.exports = PostalFefund;
+const postalMtm = mongoose.model('postalMtm', postalSchema);
+postalMtm.createIndexes();
+module.exports = postalMtm;

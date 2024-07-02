@@ -27,6 +27,15 @@ router.use('/postal/deficit',postalDeficit );
 const postalRefund = require('./postal/refund')
 router.use('/postal/refund', postalRefund);
 
+const postalBranchshifting = require('./postal/branchShifting')
+router.use('/postal/branchShifting', postalBranchshifting);
+
+const postalMtm = require('./postal/mtm')
+router.use('/postal/mtm', postalMtm);
+
+
+
+
 
 const smsAll = require('./sms/all')
 router.use('/sms/all', smsAll);

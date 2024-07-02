@@ -1,7 +1,7 @@
 const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
 const XLSX = require("xlsx");
-const PostalDeficit = require('../../models/postalDeficit');
+const postalBranchShifting = require('../../models/postalBranchShifting');
 
 
 
@@ -56,7 +56,7 @@ exports.addPost = async (req, res) => {
                 result.push(rowData);
             }
 
-            const post = await PostalDeficit.insertMany(result)
+            const post = await postalBranchShifting.insertMany(result)
 
             return res.status(200).json({ message: "Success" });
 
@@ -112,8 +112,8 @@ exports.fAll = async (req, res) => {
         }
 
 
-        let count = await PostalDeficit.countDocuments(query)
-        let data = await PostalDeficit.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
+        let count = await postalBranchShifting.countDocuments(query)
+        let data = await postalBranchShifting.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
 
         return res.status(200).json({ count, data })
 
