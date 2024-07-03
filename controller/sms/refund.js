@@ -30,37 +30,16 @@ exports.addPost = async (req, res) => {
             const result = [];
             // Extract column names from the first row
             const columnNames = [
-                'SERIAL_NO',
                 'FILENAME',
-                'CUSTOMER_NAME',
-                'ADD1',
-                'ADD2',
-                'ADD3',
-                'LANDMARK',
-                'PINCODE',
-                'CITY',
-                'MOBILE_NO',
-                'NAME',
-                'CUID',
-                'STATE',
-                'GL_IDS',
-                'REFUND_AMOUNT',
-                'REFUND_AMOUNT_IN_WORDS',
-                'FORECLOSURE_AMOUNT',
-                'AUCTION_PROCEEDS',
-                'LREGION_CODE',
-                'SUTRACODE',
-                'BRANCH',
-                'LOCATION',
-                'MONTH',
-                'NOTICE_DATE',
-                'OLD_NOTICE_DATE',
-                'DDD',
-                'EEE',
-                'NOTICE_REFERENCE_NUMBER',
+                'NOTICE_URL',
+                'TRACKING_URL',
                 'BARCODE',
-                'NOTICE_URL'
-
+                'STATUS',
+                'CUSTOMER_NAME',
+                'MOBILE_NUMBER',
+                'DATE',
+                'STATE',
+                'CITY'
             ];
             // Iterate over each row (excluding the first row)
             for (let i = 1; i < data.length; i++) {
@@ -93,7 +72,7 @@ exports.addPost = async (req, res) => {
 exports.fAll = async (req, res) => {
 
 
-    const { selectedMonth, state, city, skip, limit } = req.query;
+    const {filename, selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
@@ -116,27 +95,31 @@ exports.fAll = async (req, res) => {
         let query = {};
 
         if (selectedMonth) {
-
             const firstThreeLetters = selectedMonth.slice(0, 3);
             const regexMonth = new RegExp(firstThreeLetters, 'i');
             query.NOTICE_DATE = { $regex: regexMonth };
         }
 
         if (state) {
-            query.STATE = { $regex: state };
-            // let stateName = state.toUpperCase();
-            // query.STATE = stateName;
+            const regexState = new RegExp(state, 'i');
+            query.STATE = { $regex: regexState };
+        }
+
+        if (filename) {
+            const regexFilename = new RegExp(filename, 'i');
+            query.FILENAME = { $regex: regexFilename };
         }
 
         if (city) {
-            query.CITY = { $regex: city };
-            // let cityName = city.toUpperCase();
-            // query.CITY = city;
+            const regexCity = new RegExp(city, 'i');
+            query.CITY = { $regex: regexCity };
+            // let stateName = city.toUpperCase();
+            // query.CITY = stateName;
         }
 
 
         let count = await SmsRefund.countDocuments(query)
-        let data = await SmsRefund.find(query).skip(skipNum).limit(limitNum);
+        let data = await SmsRefund.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
 
         return res.status(200).json({ count, data })
 

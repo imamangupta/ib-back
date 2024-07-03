@@ -142,8 +142,10 @@ exports.changePassword = async (req, res) => {
         return res.status(200).json({ message: `User not found . Please contact Admin.` });
     }
     let checkPassword = await bcrypt.compare(oldPassword, userInfo.password);
+    const salt = await bcrypt.genSalt(10);
+    const hashPass = await bcrypt.hash(newPassword, salt);
     if (checkPassword) {
-        await User.findByIdAndUpdate(userInfo.id, { password: newPassword });
+        await User.findByIdAndUpdate(userInfo.id, { password: hashPass });
 
         return res.status(200).json({ message: 'Success' });
     } else {

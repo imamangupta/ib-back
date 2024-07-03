@@ -49,6 +49,13 @@ router.use('/sms/deficit',smsDeficit );
 const smsRefund = require('./sms/refund')
 router.use('/sms/refund', smsRefund);
 
+const smsBranchshifting = require('./sms/branchShifting')
+router.use('/sms/branchShifting', smsBranchshifting);
+
+const smsMtm = require('./sms/mtm')
+router.use('/sms/mtm', smsMtm);
+
+
 
 
 

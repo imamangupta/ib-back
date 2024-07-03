@@ -1,7 +1,7 @@
 const multer = require('multer')
 const upload = multer({ dest: '/tmp' })
 const XLSX = require("xlsx");
-const SmsAuction = require('../../models/smsAuction');
+const SmsBranchShifting = require('../../models/smsBranchShifting');
 
 
 
@@ -15,6 +15,8 @@ exports.addPost = async (req, res) => {
         }
 
         const { path: filePath } = req.file;
+        // const { dataType } = req.body;
+        // console.log(dataType);
 
         try {
             // Read the Excel file using your preferred library
@@ -24,8 +26,9 @@ exports.addPost = async (req, res) => {
             const worksheet = workbook.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert the sheet to JSON
 
+            // Process the data and perform necessary operations
             const result = [];
-            
+            // Extract column names from the first row
             const columnNames = [
                 'FILENAME',
                 'NOTICE_URL',
@@ -39,11 +42,11 @@ exports.addPost = async (req, res) => {
                 'CITY'
             ];
 
-            
+            // Iterate over each row (excluding the first row)
             for (let i = 1; i < data.length; i++) {
                 const rowData = {};
 
-              
+                // Iterate over each column
                 for (let j = 0; j < columnNames.length; j++) {
                     const columnName = columnNames[j];
                     const cellValue = data[i][j];
@@ -53,7 +56,7 @@ exports.addPost = async (req, res) => {
                 result.push(rowData);
             }
 
-            const post = await SmsAuction.insertMany(result)
+            const post = await SmsBranchShifting.insertMany(result)
 
             return res.status(200).json({ message: "Success" });
 
@@ -62,32 +65,33 @@ exports.addPost = async (req, res) => {
             return res.status(500).json({ error: "Error reading the Excel file" });
         }
     });
-
 };
+
+
 
 
 
 exports.fAll = async (req, res) => {
 
 
-    const { selectedMonth, state, city,filename, skip, limit } = req.query;
+    const { filename,selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
 
-
     try {
-
         if (!skip || !limit) {
             return res.status(200).json({ error:"undefined skip & limit" })
         }
+
+
 
         let query = {};
 
         if (selectedMonth) {
             const firstThreeLetters = selectedMonth.slice(0, 3);
             const regexMonth = new RegExp(firstThreeLetters, 'i');
-            query.DATE = { $regex: regexMonth };
+            query.NOTICE_DATE = { $regex: regexMonth };
         }
 
         if (state) {
@@ -103,11 +107,14 @@ exports.fAll = async (req, res) => {
         if (city) {
             const regexCity = new RegExp(city, 'i');
             query.CITY = { $regex: regexCity };
-           
+            // let stateName = city.toUpperCase();
+            // query.CITY = stateName;
         }
 
-        let count = await SmsAuction.countDocuments(query)
-        let data = await SmsAuction.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
+
+        let count = await SmsBranchShifting.countDocuments(query)
+        let data = await SmsBranchShifting.find(query).skip(skipNum).limit(limitNum).select('-date -CITY -STATE -DATE -__v -_id');
+
         return res.status(200).json({ count, data })
 
     } catch (error) {
@@ -116,3 +123,8 @@ exports.fAll = async (req, res) => {
     }
 
 }
+
+
+
+
+

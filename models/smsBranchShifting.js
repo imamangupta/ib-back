@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const smsRefundSchema = new mongoose.Schema({
+const postalSchema = new mongoose.Schema({
     FILENAME: {
         type: String,
     },
@@ -36,9 +36,8 @@ const smsRefundSchema = new mongoose.Schema({
         default: Date.now
     }
 
-
 })
 
-const SmsRefund = mongoose.model('smsRefund', smsRefundSchema);
-SmsRefund.createIndexes();
-module.exports = SmsRefund;
+const SmsBranchShifting = mongoose.model('smsBranchShifting', postalSchema);
+SmsBranchShifting.createIndexes();
+module.exports = SmsBranchShifting;
