@@ -76,7 +76,7 @@ exports.allData = async (req, res) => {
 
 
 
-exports.postalDataDownload = async (req, res) => {
+exports.smsDataDownload = async (req, res) => {
     const { type, selectedMonth, state, city, filename } = req.query;
 
     try {
