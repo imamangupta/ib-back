@@ -221,7 +221,9 @@ exports.updatePassword = async (req, res, next) => {
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
-    await User.findByIdAndUpdate(user.id, { password: newPassword });
+    const salt = await bcrypt.genSalt(10);
+    const hashPass = await bcrypt.hash(newPassword, salt);
+    await User.findByIdAndUpdate(user.id, { password: hashPass });
     await UserOtp.deleteMany({ email: verifyUser.email });
 
     return res.status(200).json({ message: 'Password Updated.' });
