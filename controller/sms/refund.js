@@ -41,23 +41,36 @@ exports.addPost = async (req, res) => {
                 'STATE',
                 'CITY'
             ];
-            // Iterate over each row (excluding the first row)
-            for (let i = 1; i < data.length; i++) {
-                const rowData = {};
 
-                // Iterate over each column
-                for (let j = 0; j < columnNames.length; j++) {
-                    const columnName = columnNames[j];
-                    const cellValue = data[i][j];
-                    rowData[columnName] = cellValue;
+            var dataCorrect = false;
+            for (let index = 0; index < columnNames.length; index++) {
+                const myColumn = columnNames[index];
+                const userColumn = data[0][index];
+                if (myColumn !== userColumn) {
+                    dataCorrect = true
+                    break;
+                }
+            }
+            if (dataCorrect) {
+                return res.status(200).json({ success: false, message: 'invalid data Check it again.' });
+            } else {
+                // Iterate over each row (excluding the first row)
+                for (let i = 1; i < data.length; i++) {
+                    const rowData = {};
+
+                    // Iterate over each column
+                    for (let j = 0; j < columnNames.length; j++) {
+                        const columnName = columnNames[j];
+                        const cellValue = data[i][j];
+                        rowData[columnName] = cellValue;
+                    }
+
+                    result.push(rowData);
                 }
 
-                result.push(rowData);
+                const post = await SmsRefund.insertMany(result)
+                return res.status(200).json({ success: true, message: 'success' });
             }
-
-            const post = await SmsRefund.insertMany(result)
-
-            return res.status(200).json({ message: "Success" });
 
         } catch (error) {
             console.error(error);
@@ -72,7 +85,7 @@ exports.addPost = async (req, res) => {
 exports.fAll = async (req, res) => {
 
 
-    const {filename, selectedMonth, state, city, skip, limit } = req.query;
+    const { filename, selectedMonth, state, city, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
@@ -87,7 +100,7 @@ exports.fAll = async (req, res) => {
     try {
 
         if (!skip || !limit) {
-            return res.status(200).json({ error:"undefined skip & limit" })
+            return res.status(200).json({ error: "undefined skip & limit" })
         }
 
 

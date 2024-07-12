@@ -42,6 +42,19 @@ exports.addPost = async (req, res) => {
                 'CITY'
             ];
 
+            var dataCorrect = false;
+            for (let index = 0; index < columnNames.length; index++) {
+                const myColumn = columnNames[index];
+                const userColumn = data[0][index];
+                if (myColumn !== userColumn) {
+                    dataCorrect = true
+                    break;
+                }
+            }
+            if (dataCorrect) {
+                return res.status(200).json({ success:false, message: 'invalid data Check it again.' });
+            } else {
+
             // Iterate over each row (excluding the first row)
             for (let i = 1; i < data.length; i++) {
                 const rowData = {};
@@ -57,8 +70,9 @@ exports.addPost = async (req, res) => {
             }
 
             const post = await SmsBranchShifting.insertMany(result)
+            return res.status(200).json({ success:true, message: 'success' });
+        }
 
-            return res.status(200).json({ message: "Success" });
 
         } catch (error) {
             console.error(error);

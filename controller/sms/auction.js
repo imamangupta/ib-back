@@ -40,22 +40,33 @@ exports.addPost = async (req, res) => {
             ];
 
             
+            var dataCorrect = false;
+            for (let index = 0; index < columnNames.length; index++) {
+                const myColumn = columnNames[index];
+                const userColumn = data[0][index];
+                if (myColumn !== userColumn) {
+                    dataCorrect = true
+                    break;
+                }
+            }
+            if (dataCorrect) {
+                return res.status(200).json({ success:false, message: 'invalid data Check it again.' });
+            } else {
+            
             for (let i = 1; i < data.length; i++) {
                 const rowData = {};
-
-              
                 for (let j = 0; j < columnNames.length; j++) {
                     const columnName = columnNames[j];
                     const cellValue = data[i][j];
                     rowData[columnName] = cellValue;
                 }
-
                 result.push(rowData);
             }
-
             const post = await SmsAuction.insertMany(result)
 
-            return res.status(200).json({ message: "Success" });
+            return res.status(200).json({ success:true, message: 'success' });
+        }
+
 
         } catch (error) {
             console.error(error);

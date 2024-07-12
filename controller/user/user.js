@@ -111,15 +111,7 @@ exports.addUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
 
-    let { search, offset, pageSize } = paginationWithFromTo(req.query.search, req.query.from, req.query.to);
-    // let check = await User.findById(req.userData.id);
     let searchQuery = {}
-    // if (req.userData.roleName == "user") {
-    //     searchQuery._id = req.userData.id
-    // }
-
-    // .skip(offset).limit(pageSize)
-    // let user = await User.find(searchQuery)
     let user = await User.find(searchQuery).select('-password')
 
     // let count = await User.count(searchQuery)
@@ -130,10 +122,6 @@ exports.getUser = async (req, res) => {
     }
 
 }
-
-
-
-
 
 
 exports.getSingleUser = async (req, res) => {
@@ -166,3 +154,5 @@ exports.sendEmail = async (req, res) => {
     console.log('working...');
 
 }
+
+

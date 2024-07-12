@@ -25,7 +25,7 @@ exports.addPost = async (req, res) => {
             const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 }); // Convert the sheet to JSON
 
             const result = [];
-            
+
             const columnNames = [
                 'FILENAME',
                 'NOTICE_URL',
@@ -39,23 +39,35 @@ exports.addPost = async (req, res) => {
                 'CITY'
             ];
 
-            
-            for (let i = 1; i < data.length; i++) {
-                const rowData = {};
 
-              
-                for (let j = 0; j < columnNames.length; j++) {
-                    const columnName = columnNames[j];
-                    const cellValue = data[i][j];
-                    rowData[columnName] = cellValue;
+
+            var dataCorrect = false;
+            for (let index = 0; index < columnNames.length; index++) {
+                const myColumn = columnNames[index];
+                const userColumn = data[0][index];
+                if (myColumn !== userColumn) {
+                    dataCorrect = true
+                    break;
+                }
+            }
+            if (dataCorrect) {
+                return res.status(200).json({ success:false, message: 'invalid data Check it again.' });
+            } else {
+
+                for (let i = 1; i < data.length; i++) {
+                    const rowData = {};
+                    for (let j = 0; j < columnNames.length; j++) {
+                        const columnName = columnNames[j];
+                        const cellValue = data[i][j];
+                        rowData[columnName] = cellValue;
+                    }
+                    result.push(rowData);
                 }
 
-                result.push(rowData);
+                const post = await PostalAuction.insertMany(result)
+                return res.status(200).json({ success:true, message: 'success' });
             }
 
-            const post = await PostalAuction.insertMany(result)
-
-            return res.status(200).json({ message: "Success" });
 
         } catch (error) {
             console.error(error);
@@ -70,7 +82,7 @@ exports.addPost = async (req, res) => {
 exports.fAll = async (req, res) => {
 
 
-    const { selectedMonth, state, city,filename, skip, limit } = req.query;
+    const { selectedMonth, state, city, filename, skip, limit } = req.query;
 
     let skipNum = parseInt(skip);
     let limitNum = parseInt(limit);
@@ -79,7 +91,7 @@ exports.fAll = async (req, res) => {
     try {
 
         if (!skip || !limit) {
-            return res.status(200).json({ error:"undefined skip & limit" })
+            return res.status(200).json({ error: "undefined skip & limit" })
         }
 
         let query = {};
@@ -103,7 +115,7 @@ exports.fAll = async (req, res) => {
         if (city) {
             const regexCity = new RegExp(city, 'i');
             query.CITY = { $regex: regexCity };
-           
+
         }
 
         let count = await PostalAuction.countDocuments(query)
